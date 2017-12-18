@@ -14,7 +14,6 @@ import static org.openqa.selenium.Keys.ENTER;
 
 public class SearchResultPage {
     public SearchResultPage(RemoteWebDriver driver) {
-
     }
 
     public SearchResultPage expandPrice(){

@@ -4,7 +4,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 class BrandsPage {
 
-
     BrandsPage(RemoteWebDriver driver, String brandName) {
         if (brandName.equals("firetrap")) {
             FiretrapPage firetrapPage = new FiretrapPage();
@@ -15,7 +14,6 @@ class BrandsPage {
 
         } else if (brandName.equals("other")) {
             driver.get("https://www.sportsdirect.com");
-
         }
     }
 }
