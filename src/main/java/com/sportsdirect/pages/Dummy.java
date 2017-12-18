@@ -1,4 +1,4 @@
-package com.sportsdirect;
+package com.sportsdirect.pages;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;

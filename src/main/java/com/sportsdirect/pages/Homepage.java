@@ -1,4 +1,4 @@
-package com.sportsdirect;
+package com.sportsdirect.pages;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
@@ -9,13 +9,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.sportsdirect.SportsdirectTest.driver;
+import static com.sportsdirect.test.SportsdirectTest.driver;
 
 public class Homepage {
 
     private By brands = By.xpath("id('topMenu')/ul[1]/li[8]/a[1]");
 
-    BrandsPage openBrandPage(String brandName) {
+    public BrandsPage openBrandPage(String brandName) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
 

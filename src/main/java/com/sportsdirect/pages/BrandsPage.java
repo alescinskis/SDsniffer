@@ -1,11 +1,11 @@
-package com.sportsdirect;
+package com.sportsdirect.pages;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class BrandsPage {
+class BrandsPage {
 
 
-    public BrandsPage(RemoteWebDriver driver, String brandName) {
+    BrandsPage(RemoteWebDriver driver, String brandName) {
         if (brandName.equals("firetrap")) {
             FiretrapPage firetrapPage = new FiretrapPage();
             firetrapPage.clickMensFootwear();
