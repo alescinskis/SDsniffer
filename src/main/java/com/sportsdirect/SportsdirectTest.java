@@ -41,12 +41,16 @@ public class SportsdirectTest {
     public void findSkechersShoes(){
         homepage.openBrandPage("sketchers");
         softAssert.assertTrue(driver.getCurrentUrl().contains("/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens"));
+        SearchResultPage searchResultPage = new SearchResultPage(driver);
+        searchResultPage.setSearchPrice("30", "60");
     }
 
     @Test
     public void findFiretrapShoes(){
         homepage.openBrandPage("firetrap");
         softAssert.assertTrue(driver.getCurrentUrl().contains("/firetrap/mens-firetrap-footwear"));
+        SearchResultPage searchResultPage = new SearchResultPage(driver);
+        searchResultPage.expandPrice().setSearchPrice("30", "60");
     }
 
 }
