@@ -97,7 +97,7 @@ public class SportsdirectTest {
 
         MailboxApi mailbox = new MailboxApi("qmy88euo", "NA4wH6RPMx4lgbM");
         Email[] emails = mailbox.getEmailsByRecipient(recoveryEmail);
-        Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
+        Uninterruptibles.sleepUninterruptibly(10, TimeUnit.SECONDS);
 
         Email latestEmail = emails[0];
 
