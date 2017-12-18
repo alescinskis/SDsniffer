@@ -67,5 +67,10 @@
     <orderEntry type="library" name="Maven: org.beanshell:bsh:2.0b4" level="project" />
     <orderEntry type="library" name="Maven: com.beust:jcommander:1.27" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.12" level="project" />
+    <orderEntry type="library" name="Maven: com.mailosaur:mailosaur-java:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.http-client:google-http-client:1.24.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-gson:1.24.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: javax.mail:mail:1.5.0-b01" level="project" />
+    <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
   </component>
 </module>

@@ -1,5 +1,9 @@
 package com.sportsdirect.test;
 
+import com.google.common.util.concurrent.Uninterruptibles;
+import com.mailosaur.MailboxApi;
+import com.mailosaur.exception.MailosaurException;
+import com.mailosaur.model.Email;
 import com.sportsdirect.pages.Homepage;
 import com.sportsdirect.pages.SearchResultPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
@@ -8,14 +12,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.asserts.SoftAssert;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
 
 public class SportsdirectTest {
 
     public static RemoteWebDriver driver;
     private static Homepage homepage;
     private SoftAssert softAssert;
-    private String defaultURL = "https://www.sportsdirect.com";
+    private String defaultURL = "https://lv.sportsdirect.com";
 
     @BeforeClass
     public static void setup(){
@@ -82,12 +88,23 @@ public class SportsdirectTest {
     }
 
     @Test
-    public void passwordRecovery(){
+    public void passwordRecovery() throws MailosaurException, IOException {
         String recoveryEmail = "testy-stephen.qmy88euo@mailosaur.io";
         homepage
                 .clickOnSignIn()
                 .clickForgotPassword()
                 .sendRecoveryEmail(recoveryEmail);
+
+        MailboxApi mailbox = new MailboxApi("qmy88euo", "NA4wH6RPMx4lgbM");
+        Email[] emails = mailbox.getEmailsByRecipient(recoveryEmail);
+        Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
+
+        Email latestEmail = emails[0];
+
+        softAssert.assertTrue(latestEmail.subject.contains("Forgotten Password"), "Incorrect mail subject");
+        softAssert.assertEquals(1, latestEmail.html.links.length, "there should be only one URL");
+        softAssert.assertTrue(latestEmail.html.body.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is missing");
+        softAssert.assertTrue(latestEmail.html.links[0].href.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is not clickable");
     }
 
     private boolean isWithinRange(BigDecimal valueToCheck, BigDecimal minValue, BigDecimal maxValue){
