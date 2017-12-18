@@ -83,7 +83,7 @@ public class SportsdirectTest {
 
     @Test
     public void passwordRecovery(){
-        String recoveryEmail = "arturs.lescinskis@gmail.com";
+        String recoveryEmail = "testy-stephen.qmy88euo@mailosaur.io";
         homepage
                 .clickOnSignIn()
                 .clickForgotPassword()

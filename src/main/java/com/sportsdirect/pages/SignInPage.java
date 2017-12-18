@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.TimeUnit;
 
 import static com.sportsdirect.test.SportsdirectTest.driver;
+import static org.openqa.selenium.Keys.ENTER;
 
 public class SignInPage {
 
@@ -16,8 +17,10 @@ public class SignInPage {
 
     public SignInPage sendRecoveryEmail(String email){
         Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-        driver.findElement(By.id("dnn_ctr54473_PasswordReset_UserName")).sendKeys(email);
-        driver.findElement(By.id("dnn_ctr54473_PasswordReset_cmdSendPassword")).click();
+        driver.findElement(By.cssSelector(".dnnFormItem")).click();
+        driver.switchTo().activeElement().sendKeys(email);
+        driver.switchTo().activeElement().sendKeys(ENTER);
+        Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
         return this;
     }
 
