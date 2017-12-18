@@ -2,9 +2,8 @@ package com.sportsdirect;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -26,14 +25,21 @@ public class Homepage {
             driver.findElement(By.cssSelector("[value='EUR'][name='lCurrenciesSwitcher']")).click();
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
         }
+
+        try {
+            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
+            driver.findElement(By.xpath("id('advertPopup')/div[1]/div[1]/div[1]/button[1]")).click();
+        } catch (NoSuchElementException ex) {
+
+        }
+
         Actions action = new Actions(driver);
 
         action.moveToElement(driver.findElement(brands)).build().perform();
         Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
 
-//        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_" + brandName), 0));
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_" + brandName), 0));
         action.moveToElement(driver.findElement(By.cssSelector("li.level1.b_" + brandName))).click().build().perform();
-        Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
         return new BrandsPage(driver, brandName);
     }
 }
