@@ -6,6 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.asserts.SoftAssert;
 
+import java.util.List;
+
 public class SportsdirectTest {
 
     protected static RemoteWebDriver driver;
@@ -50,7 +52,10 @@ public class SportsdirectTest {
         homepage.openBrandPage("firetrap");
         softAssert.assertTrue(driver.getCurrentUrl().contains("/firetrap/mens-firetrap-footwear"));
         SearchResultPage searchResultPage = new SearchResultPage(driver);
-        searchResultPage.expandPrice().setSearchPrice("30", "60");
+        List<String> filteredItems = searchResultPage
+                .expandPrice()
+                .setSearchPrice("30", "60")
+                .getRandomFilteredPrice();
     }
 
 }

@@ -13,7 +13,7 @@ import static com.sportsdirect.SportsdirectTest.driver;
 
 public class Homepage {
 
-    private By brands = By.xpath("id(\"topMenu\")/ul[1]/li[8]/a[1]");
+    private By brands = By.xpath("id('topMenu')/ul[1]/li[8]/a[1]");
 
     BrandsPage openBrandPage(String brandName) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
