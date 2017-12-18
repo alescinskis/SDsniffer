@@ -80,6 +80,16 @@ public class SportsdirectTest {
         boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
         softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
     }
+
+    @Test
+    public void passwordRecovery(){
+        String recoveryEmail = "arturs.lescinskis@gmail.com";
+        homepage
+                .clickOnSignIn()
+                .clickForgotPassword()
+                .sendRecoveryEmail(recoveryEmail);
+    }
+
     private boolean isWithinRange(BigDecimal valueToCheck, BigDecimal minValue, BigDecimal maxValue){
         return valueToCheck.compareTo(minValue) >= 0 && valueToCheck.compareTo(maxValue) <= 0;
     }

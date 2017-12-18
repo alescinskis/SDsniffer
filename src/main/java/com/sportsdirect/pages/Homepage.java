@@ -26,12 +26,13 @@ public class Homepage {
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
         }
 
-        try {
-            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-            driver.findElement(By.xpath("id('advertPopup')/div[1]/div[1]/div[1]/button[1]")).click();
-        } catch (NoSuchElementException ex) {
-
-        }
+        popupCloser();
+//        try {
+//            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
+//            driver.findElement(By.xpath("id('advertPopup')/div[1]/div[1]/div[1]/button[1]")).click();
+//        } catch (NoSuchElementException ex) {
+//
+//        }
 
         Actions action = new Actions(driver);
 
@@ -41,5 +42,20 @@ public class Homepage {
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_" + brandName), 0));
         action.moveToElement(driver.findElement(By.cssSelector("li.level1.b_" + brandName))).click().build().perform();
         return new BrandsPage(driver, brandName);
+    }
+
+    public SignInPage clickOnSignIn(){
+        popupCloser();
+        driver.findElement(By.id("dnn_dnnLOGIN_loginLink")).click();
+        return new SignInPage();
+    }
+
+    private void popupCloser(){
+        try {
+            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
+            driver.findElement(By.xpath("id('advertPopup')/div[1]/div[1]/div[1]/button[1]")).click();
+        } catch (NoSuchElementException ex) {
+
+        }
     }
 }
