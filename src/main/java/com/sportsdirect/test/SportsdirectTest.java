@@ -5,12 +5,14 @@ import com.mailosaur.MailboxApi;
 import com.mailosaur.exception.MailosaurException;
 import com.mailosaur.model.Email;
 import com.sportsdirect.pages.Homepage;
+import com.sportsdirect.pages.PasswordRecoveryPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
@@ -102,7 +104,7 @@ public class SportsdirectTest {
     public void passwordRecovery() throws MailosaurException, IOException {
         //email expires on 01.01.2018
         //captcha appears after 3rd password recovery without password change
-        String recoveryEmail = "testy-stephen.qmy88euo@mailosaur.io";
+        String recoveryEmail = "testrun-test.qmy88euo@mailosaur.io";
         homepage
                 .openHomepage()
                 .clickOnSignIn()
@@ -125,14 +127,26 @@ public class SportsdirectTest {
 
         //to keep test alive for further checks
         String recoveryURL = latestEmail.html.links[0].href;
+        String newPassword = "Iddqd1";
 
-        driver.get(recoveryURL);
+        PasswordRecoveryPage passwordRecoveryPage = new PasswordRecoveryPage();
 
-        driver.findElement(By.id("dnn_ctr53347402_PasswordReset_txtNewPassword")).click();
-        driver.findElement(By.id("dnn_ctr53347402_PasswordReset_txtNewPassword")).sendKeys("Iddqd1");
-        driver.findElement(By.id("dnn_ctr53347402_PasswordReset_txtNewPassword")).sendKeys(Keys.TAB);
-        driver.switchTo().activeElement().sendKeys("Iddqd1");
-        driver.switchTo().activeElement().sendKeys(Keys.ENTER);
+        passwordRecoveryPage
+                .openPasswordRecoveryPage(recoveryURL)
+                .enterNewPassword(newPassword);
+
+        By successMsg = By.id("dnn_ctr53347402_PasswordReset_SuccessText");
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(successMsg));
+        boolean isPasswordChanged = driver.findElement(successMsg)
+                .getText()
+                .toLowerCase()
+                .contains("password has been successfully changed");
+
+        softAssert.assertTrue(isPasswordChanged, "password wasn't changed");
+
+        System.out.println("zbs");
 
     }
 
