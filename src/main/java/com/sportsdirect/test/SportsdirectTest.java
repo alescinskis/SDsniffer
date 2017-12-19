@@ -7,6 +7,8 @@ import com.mailosaur.model.Email;
 import com.sportsdirect.pages.Homepage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.asserts.SoftAssert;
@@ -124,6 +126,13 @@ public class SportsdirectTest {
         //to keep test alive for further checks
         String recoveryURL = latestEmail.html.links[0].href;
 
+        driver.get(recoveryURL);
+
+        driver.findElement(By.id("dnn_ctr53347402_PasswordReset_txtNewPassword")).click();
+        driver.findElement(By.id("dnn_ctr53347402_PasswordReset_txtNewPassword")).sendKeys("Iddqd1");
+        driver.findElement(By.id("dnn_ctr53347402_PasswordReset_txtNewPassword")).sendKeys(Keys.TAB);
+        driver.switchTo().activeElement().sendKeys("Iddqd1");
+        driver.switchTo().activeElement().sendKeys(Keys.ENTER);
 
     }
 
