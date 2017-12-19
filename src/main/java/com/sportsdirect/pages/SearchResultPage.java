@@ -2,11 +2,15 @@ package com.sportsdirect.pages;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.sportsdirect.test.SportsdirectTest.driver;
 import static org.openqa.selenium.Keys.ENTER;
@@ -43,6 +47,20 @@ public class SearchResultPage {
                 .trim()
                 .replaceAll("[€ ]", "")
                 .replace(",", ".");
+    }
+
+    public List<String> getFilteredPrices(){
+        Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+        List<String> prices = new ArrayList<>();
+        List<WebElement> pricesElements = driver.findElements(By.cssSelector("span.CurrencySizeLarge.curprice.productHasRef"));
+        prices.addAll(pricesElements.stream().map(WebElement::getText).collect(Collectors.toList()));
+
+        for (int i = 0; i < prices.size(); i++) {
+            prices.get(i).trim().replace(",", ".").replaceAll("[€ ]", "");
+        }
+
+        prices.size();
+        return prices;
     }
 
 }

@@ -13,6 +13,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.sportsdirect.pages.Homepage.defaultURL;
@@ -97,6 +98,32 @@ public class SportsdirectTest {
     }
 
     @Test
+    public void checkSearchRange(){
+
+        BigDecimal minValue = BigDecimal.valueOf(30);
+        BigDecimal maxValue = BigDecimal.valueOf(60);
+
+        List<String> filteredItems = homepage
+                .openHomepage()
+                .changeCurrencyTo("EUR")
+                .openSkechersPage()
+                .clickAllMens()
+                .setSearchPrice(minValue.toString(), maxValue.toString())
+                .getFilteredPrices();
+
+//        List<BigDecimal> filteredItemPrice = new List<BigDecimal(filteredItems);
+//        boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
+
+//        filteredItems.stream().
+
+        String allMensURL = "/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens";
+//
+//        softAssert.assertTrue(driver.getCurrentUrl().contains(allMensURL),
+//                String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", allMensURL, driver.getCurrentUrl()));
+//        softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
+    }
+
+    @Test
     public void passwordRecovery() throws MailosaurException, IOException {
         //email expires on 01.01.2018
         //captcha appears after 3rd password recovery without password change
@@ -107,14 +134,17 @@ public class SportsdirectTest {
                 .clickForgotPassword()
                 .sendRecoveryEmail(recoveryEmail);
 
+        //to give some time for email to arrive
+        Uninterruptibles.sleepUninterruptibly(10, TimeUnit.SECONDS);
+
         MailboxApi mailbox = new MailboxApi("qmy88euo", "NA4wH6RPMx4lgbM");
         Email[] emails = mailbox.getEmailsByRecipient(recoveryEmail);
-        Uninterruptibles.sleepUninterruptibly(10, TimeUnit.SECONDS);
 
         Email latestEmail = emails[0];
 
         softAssert.assertTrue(latestEmail.subject.contains("Forgotten Password"), "Incorrect mail subject");
-        softAssert.assertEquals(1, latestEmail.html.links.length, "there should be only one URL");
+        softAssert.assertTrue(latestEmail.senderHost.contains("cs@sportsdirect.com"), "Incorrect sender");
+        softAssert.assertEquals(latestEmail.html.links.length, 1, "there should be only one URL");
         softAssert.assertTrue(latestEmail.html.body.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is missing");
         softAssert.assertTrue(latestEmail.html.links[0].href.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is not clickable");
     }
