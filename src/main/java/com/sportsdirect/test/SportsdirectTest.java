@@ -56,21 +56,20 @@ public class SportsdirectTest {
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
 
-        String filteredItem = homepage
+        List<BigDecimal> filteredItems = homepage
                 .openHomepage()
                 .changeCurrencyTo("EUR")
                 .openSkechersPage()
                 .clickAllMens()
                 .setSearchPrice(minValue.toString(), maxValue.toString())
-                .getRandomFilteredPrice();
+                .getFilteredPrices();
 
-        BigDecimal filteredItemPrice = new BigDecimal(filteredItem);
-        boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
+        boolean withinRange = isItemsWithinPriceRange(filteredItems, minValue, maxValue);
         String allMensURL = "/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens";
 
         softAssert.assertTrue(driver.getCurrentUrl().contains(allMensURL),
                 String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", allMensURL, driver.getCurrentUrl()));
-        softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
+        softAssert.assertTrue(withinRange, String.format("prices <%s> are not within specified range", filteredItems));
     }
 
     @Test
@@ -79,41 +78,22 @@ public class SportsdirectTest {
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
 
-        String filteredItem = homepage
+        List<BigDecimal> filteredItems = homepage
                 .openHomepage()
                 .changeCurrencyTo("EUR")
                 .openFireTrapPage()
                 .clickMensFootwear()
                 .expandPrice()
                 .setSearchPrice(minValue.toString(), maxValue.toString())
-                .getRandomFilteredPrice();
+                .getFilteredPrices();
 
-        BigDecimal filteredItemPrice = new BigDecimal(filteredItem);
-        boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
+        boolean withinRange = isItemsWithinPriceRange(filteredItems, minValue, maxValue);
         String mensFootwearURL = "/firetrap/mens-firetrap-footwear";
 
         softAssert.assertTrue(driver.getCurrentUrl().contains(mensFootwearURL),
                 String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", mensFootwearURL, driver.getCurrentUrl()));
-        softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
-    }
+        softAssert.assertTrue(withinRange, String.format("prices <%s> are not within specified range", filteredItems));
 
-    @Test
-    public void checkSearchRange(){
-
-        BigDecimal minValue = BigDecimal.valueOf(30);
-        BigDecimal maxValue = BigDecimal.valueOf(60);
-
-        List<BigDecimal> filteredItemPrices = homepage
-                .openHomepage()
-                .changeCurrencyTo("EUR")
-                .openSkechersPage()
-                .clickAllMens()
-                .setSearchPrice(minValue.toString(), maxValue.toString())
-                .getFilteredPrices();
-
-        boolean withinRange = isItemsWithinPriceRange(filteredItemPrices, minValue, maxValue);
-
-        softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrices));
     }
 
     @Test
@@ -140,10 +120,11 @@ public class SportsdirectTest {
         softAssert.assertEquals(latestEmail.html.links.length, 1, "there should be only one URL");
         softAssert.assertTrue(latestEmail.html.body.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is missing");
         softAssert.assertTrue(latestEmail.html.links[0].href.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is not clickable");
-    }
 
-    private boolean isWithinRange(BigDecimal valueToCheck, BigDecimal minValue, BigDecimal maxValue){
-        return valueToCheck.compareTo(minValue) >= 0 && valueToCheck.compareTo(maxValue) <= 0;
+        //to keep test alive for further checks
+        String recoveryURL = latestEmail.html.links[0].href;
+
+
     }
 
     private boolean isItemsWithinPriceRange(List<BigDecimal> valuesToCheck, BigDecimal minValue, BigDecimal maxValue) {
