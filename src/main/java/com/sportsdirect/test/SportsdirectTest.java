@@ -103,7 +103,7 @@ public class SportsdirectTest {
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
 
-        List<String> filteredItems = homepage
+        List<BigDecimal> filteredItemPrices = homepage
                 .openHomepage()
                 .changeCurrencyTo("EUR")
                 .openSkechersPage()
@@ -111,16 +111,9 @@ public class SportsdirectTest {
                 .setSearchPrice(minValue.toString(), maxValue.toString())
                 .getFilteredPrices();
 
-//        List<BigDecimal> filteredItemPrice = new List<BigDecimal(filteredItems);
-//        boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
+        boolean withinRange = isItemsWithinPriceRange(filteredItemPrices, minValue, maxValue);
 
-//        filteredItems.stream().
-
-        String allMensURL = "/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens";
-//
-//        softAssert.assertTrue(driver.getCurrentUrl().contains(allMensURL),
-//                String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", allMensURL, driver.getCurrentUrl()));
-//        softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
+        softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrices));
     }
 
     @Test
@@ -151,5 +144,11 @@ public class SportsdirectTest {
 
     private boolean isWithinRange(BigDecimal valueToCheck, BigDecimal minValue, BigDecimal maxValue){
         return valueToCheck.compareTo(minValue) >= 0 && valueToCheck.compareTo(maxValue) <= 0;
+    }
+
+    private boolean isItemsWithinPriceRange(List<BigDecimal> valuesToCheck, BigDecimal minValue, BigDecimal maxValue) {
+        return valuesToCheck.stream().noneMatch(a->
+                a.compareTo(minValue) < 0 ||
+                        a.compareTo(maxValue) > 0);
     }
 }
