@@ -112,7 +112,8 @@ public class SportsdirectTest {
                 .sendRecoveryEmail(recoveryEmail);
 
         //to give some time for email to arrive
-        Uninterruptibles.sleepUninterruptibly(10, TimeUnit.SECONDS);
+        //here you might want to pass the captcha manually
+        Uninterruptibles.sleepUninterruptibly(20, TimeUnit.SECONDS);
 
         MailboxApi mailbox = new MailboxApi("qmy88euo", "NA4wH6RPMx4lgbM");
         Email[] emails = mailbox.getEmailsByRecipient(recoveryEmail);
