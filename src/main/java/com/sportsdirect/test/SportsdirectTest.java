@@ -115,8 +115,8 @@ public class SportsdirectTest {
 
         Email latestEmail = emails[0];
 
-        softAssert.assertTrue(latestEmail.subject.contains("Forgotten Password"), "Incorrect mail subject");
-        softAssert.assertTrue(latestEmail.senderHost.contains("cs@sportsdirect.com"), "Incorrect sender");
+        softAssert.assertTrue(latestEmail.subject.contains("Sports Direct Latvia - Forgotten Password"), "Incorrect mail subject");
+        softAssert.assertTrue(latestEmail.senderhost.contains("extmail.sportski.com"), "Incorrect sender host");
         softAssert.assertEquals(latestEmail.html.links.length, 1, "there should be only one URL");
         softAssert.assertTrue(latestEmail.html.body.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is missing");
         softAssert.assertTrue(latestEmail.html.links[0].href.contains(defaultURL + "/Login/PasswordReset?token="), "recovery URL is not clickable");
