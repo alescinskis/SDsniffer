@@ -146,8 +146,6 @@ public class SportsdirectTest {
 
         softAssert.assertTrue(isPasswordChanged, "password wasn't changed");
 
-        System.out.println("zbs");
-
     }
 
     private boolean isItemsWithinPriceRange(List<BigDecimal> valuesToCheck, BigDecimal minValue, BigDecimal maxValue) {
