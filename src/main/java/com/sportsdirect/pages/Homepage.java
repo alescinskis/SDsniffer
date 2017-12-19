@@ -13,6 +13,7 @@ import static com.sportsdirect.test.SportsdirectTest.driver;
 
 public class Homepage {
 
+    public static String defaultURL = "https://lv.sportsdirect.com";
     private By brands = By.xpath("id('topMenu')/ul[1]/li[8]/a[1]");
 
     public BrandsPage openBrandPage(String brandName) {
@@ -42,6 +43,11 @@ public class Homepage {
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_" + brandName), 0));
         action.moveToElement(driver.findElement(By.cssSelector("li.level1.b_" + brandName))).click().build().perform();
         return new BrandsPage(driver, brandName);
+    }
+
+    public Homepage openHomepage(){
+        driver.get(defaultURL);
+        return this;
     }
 
     public SignInPage clickOnSignIn(){

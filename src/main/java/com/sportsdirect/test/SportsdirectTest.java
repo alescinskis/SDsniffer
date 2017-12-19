@@ -16,12 +16,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
+import static com.sportsdirect.pages.Homepage.defaultURL;
+
 public class SportsdirectTest {
 
     public static RemoteWebDriver driver;
     private static Homepage homepage;
     private SoftAssert softAssert;
-    private String defaultURL = "https://lv.sportsdirect.com";
 
     @BeforeClass
     public static void setup(){
@@ -39,7 +40,6 @@ public class SportsdirectTest {
 
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get(defaultURL);
         homepage = new Homepage();
     }
 
@@ -51,7 +51,9 @@ public class SportsdirectTest {
 
     @Test
     public void findSkechersShoesWithinRange(){
-        homepage.openBrandPage("sketchers");
+        homepage
+                .openHomepage()
+                .openBrandPage("sketchers");
         softAssert.assertTrue(driver.getCurrentUrl().contains("/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens"));
         SearchResultPage searchResultPage = new SearchResultPage(driver);
 
@@ -69,7 +71,9 @@ public class SportsdirectTest {
 
     @Test
     public void findFiretrapShoesWithinRange(){
-        homepage.openBrandPage("firetrap");
+        homepage
+                .openHomepage()
+                .openBrandPage("firetrap");
         String mensFootwearURL = "/firetrap/mens-firetrap-footwear";
         softAssert.assertTrue(driver.getCurrentUrl().contains(mensFootwearURL), String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", mensFootwearURL, driver.getCurrentUrl()));
         SearchResultPage searchResultPage = new SearchResultPage(driver);
@@ -91,6 +95,7 @@ public class SportsdirectTest {
     public void passwordRecovery() throws MailosaurException, IOException {
         String recoveryEmail = "testy-stephen.qmy88euo@mailosaur.io";
         homepage
+                .openHomepage()
                 .clickOnSignIn()
                 .clickForgotPassword()
                 .sendRecoveryEmail(recoveryEmail);
