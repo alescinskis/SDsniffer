@@ -2,11 +2,11 @@ package com.sportsdirect.pages;
 
 import static com.sportsdirect.test.SportsdirectTest.driver;
 
-class FiretrapPage {
+public class FiretrapPage {
 
-    SearchResultPage clickMensFootwear(){
+    public SearchResultPage clickMensFootwear(){
         driver.executeScript("document.getElementsByClassName('img-responsive')[7].click();");
-        return new SearchResultPage(driver);
+        return new SearchResultPage();
     }
 
 }

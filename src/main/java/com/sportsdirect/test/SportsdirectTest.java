@@ -5,7 +5,6 @@ import com.mailosaur.MailboxApi;
 import com.mailosaur.exception.MailosaurException;
 import com.mailosaur.model.Email;
 import com.sportsdirect.pages.Homepage;
-import com.sportsdirect.pages.SearchResultPage;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.junit.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -26,7 +25,8 @@ public class SportsdirectTest {
 
     @BeforeClass
     public static void setup(){
-        ChromeDriverManager.getInstance().setup(); //new latest chrome browser version at least 63
+        //latest chrome browser version required, at least 63
+        ChromeDriverManager.getInstance().setup();
     }
 
     @AfterClass
@@ -51,48 +51,55 @@ public class SportsdirectTest {
 
     @Test
     public void findSkechersShoesWithinRange(){
-        homepage
-                .openHomepage()
-                .openBrandPage("sketchers");
-        softAssert.assertTrue(driver.getCurrentUrl().contains("/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens"));
-        SearchResultPage searchResultPage = new SearchResultPage(driver);
 
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
 
-        String filteredItem = searchResultPage
+        String filteredItem = homepage
+                .openHomepage()
+                .changeCurrencyTo("EUR")
+                .openSkechersPage()
+                .clickAllMens()
                 .setSearchPrice(minValue.toString(), maxValue.toString())
                 .getRandomFilteredPrice();
 
         BigDecimal filteredItemPrice = new BigDecimal(filteredItem);
         boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
+        String allMensURL = "/skechers/all-skechers#dcp=1&dppp=100&OrderBy=rank&Filter=AFLOR%5EMens";
+
+        softAssert.assertTrue(driver.getCurrentUrl().contains(allMensURL),
+                String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", allMensURL, driver.getCurrentUrl()));
         softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
     }
 
     @Test
     public void findFiretrapShoesWithinRange(){
-        homepage
-                .openHomepage()
-                .openBrandPage("firetrap");
-        String mensFootwearURL = "/firetrap/mens-firetrap-footwear";
-        softAssert.assertTrue(driver.getCurrentUrl().contains(mensFootwearURL), String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", mensFootwearURL, driver.getCurrentUrl()));
-        SearchResultPage searchResultPage = new SearchResultPage(driver);
 
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
 
-        String filteredItem = searchResultPage
+        String filteredItem = homepage
+                .openHomepage()
+                .changeCurrencyTo("EUR")
+                .openFireTrapPage()
+                .clickMensFootwear()
                 .expandPrice()
                 .setSearchPrice(minValue.toString(), maxValue.toString())
                 .getRandomFilteredPrice();
 
         BigDecimal filteredItemPrice = new BigDecimal(filteredItem);
         boolean withinRange = isWithinRange(filteredItemPrice, minValue, maxValue);
+        String mensFootwearURL = "/firetrap/mens-firetrap-footwear";
+
+        softAssert.assertTrue(driver.getCurrentUrl().contains(mensFootwearURL),
+                String.format("Wrong URL, doesn't contain <%s>, actual URL is <%s>", mensFootwearURL, driver.getCurrentUrl()));
         softAssert.assertTrue(withinRange, String.format("price <%s> is not within specified range", filteredItemPrice));
     }
 
     @Test
     public void passwordRecovery() throws MailosaurException, IOException {
+        //email expires on 01.01.2018
+        //captcha appears after 3rd password recovery without password change
         String recoveryEmail = "testy-stephen.qmy88euo@mailosaur.io";
         homepage
                 .openHomepage()

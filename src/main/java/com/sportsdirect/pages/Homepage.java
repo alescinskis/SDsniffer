@@ -16,38 +16,37 @@ public class Homepage {
     public static String defaultURL = "https://lv.sportsdirect.com";
     private By brands = By.xpath("id('topMenu')/ul[1]/li[8]/a[1]");
 
-    public BrandsPage openBrandPage(String brandName) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
+    public Homepage openHomepage(){
+        driver.get(defaultURL);
+        return this;
+    }
 
-        if(!driver.findElement(By.cssSelector("div.spanCurrencyLanguageSelector")).getText().contains("EUR")){
-            driver.findElement(By.cssSelector(".spanCurrencyLanguageSelector")).click();
-            Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
-            driver.findElement(By.cssSelector("[value='EUR'][name='lCurrenciesSwitcher']")).click();
-            wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
-        }
-
+    public FiretrapPage openFireTrapPage() {
         popupCloser();
-//        try {
-//            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-//            driver.findElement(By.xpath("id('advertPopup')/div[1]/div[1]/div[1]/button[1]")).click();
-//        } catch (NoSuchElementException ex) {
-//
-//        }
 
         Actions action = new Actions(driver);
 
         action.moveToElement(driver.findElement(brands)).build().perform();
         Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
 
-        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_" + brandName), 0));
-        action.moveToElement(driver.findElement(By.cssSelector("li.level1.b_" + brandName))).click().build().perform();
-        return new BrandsPage(driver, brandName);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_firetrap"), 0));
+        action.moveToElement(driver.findElement(By.cssSelector("li.level1.b_firetrap"))).click().build().perform();
+        return new FiretrapPage();
     }
 
-    public Homepage openHomepage(){
-        driver.get(defaultURL);
-        return this;
+    public SkechersPage openSkechersPage() {
+        popupCloser();
+
+        Actions action = new Actions(driver);
+
+        action.moveToElement(driver.findElement(brands)).build().perform();
+        Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("li.level1.b_sketchers"), 0));
+        action.moveToElement(driver.findElement(By.cssSelector("li.level1.b_sketchers"))).click().build().perform();
+        return new SkechersPage();
     }
 
     public SignInPage clickOnSignIn(){
@@ -56,12 +55,25 @@ public class Homepage {
         return new SignInPage();
     }
 
+    public Homepage changeCurrencyTo(String currencyCode) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
+
+        if(!driver.findElement(By.cssSelector("div.spanCurrencyLanguageSelector")).getText().contains(currencyCode)) {
+            driver.findElement(By.cssSelector(".spanCurrencyLanguageSelector")).click();
+            Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+            driver.findElement(By.cssSelector("[value='" + currencyCode + "'][name='lCurrenciesSwitcher']")).click();
+            wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
+        }
+        return this;
+    }
+
     private void popupCloser(){
         try {
             Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-            driver.findElement(By.xpath("id('advertPopup')/div[1]/div[1]/div[1]/button[1]")).click();
+            driver.findElement(By.cssSelector(".advertPopup .close")).click();
         } catch (NoSuchElementException ex) {
-
+            System.out.println("pop-up didn't appear");
         }
     }
 }

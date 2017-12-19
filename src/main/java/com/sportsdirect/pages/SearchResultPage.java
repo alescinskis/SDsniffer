@@ -2,7 +2,6 @@ package com.sportsdirect.pages;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -13,7 +12,7 @@ import static com.sportsdirect.test.SportsdirectTest.driver;
 import static org.openqa.selenium.Keys.ENTER;
 
 public class SearchResultPage {
-    public SearchResultPage(RemoteWebDriver driver) {
+    public SearchResultPage() {
     }
 
     public SearchResultPage expandPrice(){
@@ -38,7 +37,12 @@ public class SearchResultPage {
         int listSize = driver.findElements(By.cssSelector("span.CurrencySizeLarge.curprice")).size();
         Random random = new Random();
         int randomItem = random.nextInt(listSize - 1);
-        return driver.findElements(By.cssSelector("span.CurrencySizeLarge.curprice.productHasRef")).get(randomItem).getText().trim().replaceAll("[€ ]", "").replace(",", ".");
+        return driver.findElements(By.cssSelector("span.CurrencySizeLarge.curprice.productHasRef"))
+                .get(randomItem)
+                .getText()
+                .trim()
+                .replaceAll("[€ ]", "")
+                .replace(",", ".");
     }
 
 }

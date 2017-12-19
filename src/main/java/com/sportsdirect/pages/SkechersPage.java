@@ -2,11 +2,11 @@ package com.sportsdirect.pages;
 
 import static com.sportsdirect.test.SportsdirectTest.driver;
 
-class SkechersPage {
+public class SkechersPage {
 
-    SearchResultPage clickAllMens(){
+    public SearchResultPage clickAllMens(){
         driver.executeScript("document.getElementsByClassName('img-responsive')[16].click();");
-        return new SearchResultPage(driver);
+        return new SearchResultPage();
     }
 
 }
