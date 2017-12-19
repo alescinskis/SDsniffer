@@ -29,18 +29,18 @@ public class SportsdirectTest {
     private SoftAssert softAssert;
 
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         //latest chrome browser version required, at least 63
         ChromeDriverManager.getInstance().setup();
     }
 
     @AfterClass
-    public static void cleanUp(){
+    public static void cleanUp() {
         driver.quit();
     }
 
     @Before
-    public void beforeMethod(){
+    public void beforeMethod() {
         softAssert = new SoftAssert();
 
         driver = new ChromeDriver();
@@ -49,13 +49,13 @@ public class SportsdirectTest {
     }
 
     @After
-    public void afterMethod(){
+    public void afterMethod() {
         driver.quit();
         softAssert.assertAll();
     }
 
     @Test
-    public void findSkechersShoesWithinRange(){
+    public void findSkechersShoesWithinRange() {
 
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
@@ -77,7 +77,7 @@ public class SportsdirectTest {
     }
 
     @Test
-    public void findFiretrapShoesWithinRange(){
+    public void findFiretrapShoesWithinRange() {
 
         BigDecimal minValue = BigDecimal.valueOf(30);
         BigDecimal maxValue = BigDecimal.valueOf(60);
@@ -150,7 +150,7 @@ public class SportsdirectTest {
     }
 
     private boolean isItemsWithinPriceRange(List<BigDecimal> valuesToCheck, BigDecimal minValue, BigDecimal maxValue) {
-        return valuesToCheck.stream().noneMatch(a->
+        return valuesToCheck.stream().noneMatch(a ->
                 a.compareTo(minValue) < 0 ||
                         a.compareTo(maxValue) > 0);
     }

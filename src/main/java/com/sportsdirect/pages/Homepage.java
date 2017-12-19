@@ -16,7 +16,7 @@ public class Homepage {
     public static String defaultURL = "https://lv.sportsdirect.com";
     private By brands = By.xpath("id('topMenu')/ul[1]/li[8]/a[1]");
 
-    public Homepage openHomepage(){
+    public Homepage openHomepage() {
         driver.get(defaultURL);
         return this;
     }
@@ -49,7 +49,7 @@ public class Homepage {
         return new SkechersPage();
     }
 
-    public SignInPage clickOnSignIn(){
+    public SignInPage clickOnSignIn() {
         popupCloser();
         driver.findElement(By.id("dnn_dnnLOGIN_loginLink")).click();
         return new SignInPage();
@@ -59,19 +59,22 @@ public class Homepage {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
 
-        if(!driver.findElement(By.cssSelector("div.spanCurrencyLanguageSelector")).getText().contains(currencyCode)) {
+        By currencyCodeButton = By.cssSelector("[value='" + currencyCode + "'][name='lCurrenciesSwitcher']");
+        if (!driver.findElement(By.cssSelector("div.spanCurrencyLanguageSelector")).getText().contains(currencyCode)) {
             driver.findElement(By.cssSelector(".spanCurrencyLanguageSelector")).click();
-            Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
-            driver.findElement(By.cssSelector("[value='" + currencyCode + "'][name='lCurrenciesSwitcher']")).click();
+            wait.until(ExpectedConditions.elementToBeClickable(currencyCodeButton));
+            driver.findElement(currencyCodeButton).click();
             wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(brands, 0));
         }
         return this;
     }
 
-    private void popupCloser(){
+    private void popupCloser() {
         try {
-            Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-            driver.findElement(By.cssSelector(".advertPopup .close")).click();
+            By popupCloseButton = By.cssSelector(".advertPopup .close");
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.elementToBeClickable(popupCloseButton));
+            driver.findElement(popupCloseButton).click();
         } catch (NoSuchElementException ex) {
             System.out.println("pop-up didn't appear");
         }

@@ -1,27 +1,26 @@
 package com.sportsdirect.pages;
 
-import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
-
-import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.sportsdirect.test.SportsdirectTest.driver;
 import static org.openqa.selenium.Keys.ENTER;
 
 public class SignInPage {
 
-    public SignInPage clickForgotPassword(){
+    public SignInPage clickForgotPassword() {
         driver.findElement(By.className("ForgotPasswordLinkButton")).click();
         return this;
     }
 
-    public SignInPage sendRecoveryEmail(String email){
-        Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-        driver.findElement(By.cssSelector(".dnnFormItem")).click();
+    public void sendRecoveryEmail(String email) {
+        By emailField = By.cssSelector(".dnnFormItem");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(emailField));
+        driver.findElement(emailField).click();
         driver.switchTo().activeElement().sendKeys(email);
         driver.switchTo().activeElement().sendKeys(ENTER);
-        Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
-        return this;
     }
 
 }

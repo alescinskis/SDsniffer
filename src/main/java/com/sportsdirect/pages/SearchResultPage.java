@@ -20,7 +20,7 @@ public class SearchResultPage {
     SearchResultPage() {
     }
 
-    public SearchResultPage expandPrice(){
+    public SearchResultPage expandPrice() {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector(".FilterCollapseImage.glyphicon"), 3));
         driver.findElements(By.cssSelector(".FilterCollapseImage.glyphicon")).get(4).click();
@@ -28,7 +28,7 @@ public class SearchResultPage {
         return this;
     }
 
-    public SearchResultPage setSearchPrice(String min, String max){
+    public SearchResultPage setSearchPrice(String min, String max) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.id("PriceFilterTextEntryMax"), 0));
         driver.findElement(By.id("PriceFilterTextEntryMin")).sendKeys(min);
@@ -37,8 +37,7 @@ public class SearchResultPage {
         return this;
     }
 
-    public String getRandomFilteredPrice(){
-        Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+    public String getRandomFilteredPrice() {
         int listSize = driver.findElements(By.cssSelector("span.CurrencySizeLarge.curprice")).size();
         Random random = new Random();
         int randomItem = random.nextInt(listSize - 1);
@@ -50,8 +49,8 @@ public class SearchResultPage {
                 .replace(",", ".");
     }
 
-    public List<BigDecimal> getFilteredPrices(){
-        Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
+    public List<BigDecimal> getFilteredPrices() {
+        Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
 
         Function<WebElement, BigDecimal> convert = element ->
                 new BigDecimal(element.getText().trim().replace(",", ".").replaceAll("[€ ]", ""));
